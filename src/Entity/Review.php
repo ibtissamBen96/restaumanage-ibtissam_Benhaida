@@ -28,9 +28,19 @@ class Review
     private $rating;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="create_at", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
     private $created_at;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="reviews")
+     */
+    private $user_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=restaurant::class, inversedBy="reviews")
+     */
+    private $restaurant_id;
 
     public function getId(): ?int
     {
@@ -69,6 +79,30 @@ class Review
     public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUserId(): ?user
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(?user $user_id): self
+    {
+        $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    public function getRestaurantId(): ?restaurant
+    {
+        return $this->restaurant_id;
+    }
+
+    public function setRestaurantId(?restaurant $restaurant_id): self
+    {
+        $this->restaurant_id = $restaurant_id;
 
         return $this;
     }
