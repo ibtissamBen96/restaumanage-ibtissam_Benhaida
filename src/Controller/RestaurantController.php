@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\Restaurant;
+use App\Repository\RestaurantRepository;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -8,6 +10,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RestaurantController extends AbstractController
 {
+
+    private $restaurantRepository;
+
+    public function __construct(RestaurantRepository $restaurantRepository)
+    {
+        $this->restaurantRepository = $restaurantRepository;
+    }
+
     /**
      * @Route("/restaurant", name="restaurant")
      */
@@ -17,5 +27,35 @@ class RestaurantController extends AbstractController
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/RestaurantController.php',
         ]);
+    }
+
+
+
+    /**
+     * @Route("/Restaurant/new", name="create_restaurant")
+     */
+
+    public function createRestaurant(): Response{
+
+        if ($request->getMethod() === 'POST') {
+            
+            $name = $request->get('name');
+            $description = $request->get('description');
+            $created_at = $request->get('created_at');
+
+            $restaurant = new Restaurant();
+            $restaurant->setName($name);
+            $restaurant->setDescription($description);
+            $restaurant->setCreated_at($created_at);
+
+            $this->restaurantRepository->addRestaurant($restaurant);
+
+            $this->addFlash('success', 'restaurant bien ajouter');
+            return $this->redirectToRoute('restaurant_show');
+
+        }else{
+
+            return $this->render('Restaurant/addRestaurant.html.twig');
+        }  
     }
 }

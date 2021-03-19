@@ -47,4 +47,10 @@ class RestaurantPictureRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function addRestaurantPicture($restaurantPicture){
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($restaurantPicture);
+        $entityManager->flush();
+    }
 }

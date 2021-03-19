@@ -47,4 +47,10 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function addUser($user){
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+    }
 }

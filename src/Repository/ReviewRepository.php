@@ -47,4 +47,10 @@ class ReviewRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function addReview($review){
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($review);
+        $entityManager->flush();
+    }
 }
