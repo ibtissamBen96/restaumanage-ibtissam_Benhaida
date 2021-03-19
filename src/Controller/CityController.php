@@ -19,14 +19,13 @@ class CityController extends AbstractController
     }
 
     /**
-     * @Route("/city", name="city")
+     * @Route("/City", name="city")
      */
     public function index(): Response
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/CityController.php',
-        ]);
+        $repository = $this->getDoctrine()->getRepository(City::class);
+        $cites = $repository->findAll();
+        return $this->render('City/City.html.twig',['cites'=>$cites]);
     }
 
     /**
@@ -47,7 +46,7 @@ class CityController extends AbstractController
             $this->cityRepository->addCity($city);
 
             $this->addFlash('success', 'city bien ajouter');
-            return $this->redirectToRoute('city_show');
+            return $this->redirectToRoute('city');
 
         }else{
 
@@ -66,7 +65,7 @@ class CityController extends AbstractController
         $city = $this->getDoctrine()->getRepository(City::class)->find($id);
         $this->cityRepository->deleteCity($city);       
         $this->addFlash('success', 'city bien supprimer');
-        return $this->redirectToRoute('city_show');
+        return $this->redirectToRoute('city');
     }
 
 
@@ -89,13 +88,24 @@ class CityController extends AbstractController
 
             $this->cityRepository->updateCity();
             $this->addFlash('success', 'city bien ajouter');
-            return $this->redirectToRoute('city_show');
+            return $this->redirectToRoute('city');
 
         }else{
             return $this->render('City/updateCity.html.twig');
         }
     }
 
+
+
+    /**
+     * @Route("/City/show/{id}", name="show_city")
+     */
+   
+    public function showCity($id){
+        $repository = $this->getDoctrine()->getRepository(City::class);
+        $city = $repository->find($id);
+        return $this->render('City/showCity.html.twig',['city'=>$city]);
+    }
 
 
 

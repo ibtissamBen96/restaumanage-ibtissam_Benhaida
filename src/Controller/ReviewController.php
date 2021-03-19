@@ -19,19 +19,20 @@ class ReviewController extends AbstractController
 
 
     /**
-     * @Route("/review", name="review")
+     * @Route("/Review", name="review")
      */
+
     public function index(): Response
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/ReviewController.php',
-        ]);
+        $repository = $this->getDoctrine()->getRepository(Review::class);
+        $reviews = $repository->findAll();
+        return $this->render('Review/Review.html.twig',['reviews'=>$reviews]);
     }
 
+   
 
     /**
-     * @Route("/review/new", name="create_review")
+     * @Route("/Review/new", name="create_review")
      */
 
     public function createReview(): Response{
@@ -102,6 +103,15 @@ class ReviewController extends AbstractController
         }else{
             return $this->render('Review/updateReview.html.twig');
         }
+    }
+
+    /**
+     * @Route("/Review/show/{id}", name="show_review")
+     */
+    public function showReview($id){
+        $repository = $this->getDoctrine()->getRepository(Review::class);
+        $review = $repository->find($id);
+        return $this->render('Review/showReview.html.twig',['review'=>$review]);
     }
 
     

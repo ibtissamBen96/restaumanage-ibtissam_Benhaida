@@ -19,14 +19,13 @@ class RestaurantController extends AbstractController
     }
 
     /**
-     * @Route("/restaurant", name="restaurant")
+     * @Route("/Restaurant", name="restaurant")
      */
     public function index(): Response
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/RestaurantController.php',
-        ]);
+        $repository = $this->getDoctrine()->getRepository(Restaurant::class);
+        $restaurants = $repository->findAll();
+        return $this->render('Restaurant/Restaurant.html.twig',['restaurants'=>$restaurants]);
     }
 
 
@@ -100,6 +99,16 @@ class RestaurantController extends AbstractController
         }else{
             return $this->render('Restaurant/updateRestaurant.html.twig');
         }
+    }
+
+    /**
+     * @Route("/Restaurant/show/{id}", name="show_restaurant")
+     */
+   
+    public function showRestaurant($id){
+        $repository = $this->getDoctrine()->getRepository(Restaurant::class);
+        $restaurant = $repository->find($id);
+        return $this->render('Restaurant/showRestaurant.html.twig',['restaurant'=>$restaurant]);
     }
 
 }

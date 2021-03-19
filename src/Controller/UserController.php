@@ -19,14 +19,13 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/user", name="user")
+     * @Route("/User", name="user")
      */
     public function index(): Response
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/UserController.php',
-        ]);
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        $users = $repository->findAll();
+        return $this->render('User/User.html.twig',['users'=>$users]);
     }
 
 
@@ -96,6 +95,17 @@ class UserController extends AbstractController
         }else{
             return $this->render('City/updateCity.html.twig');
         }
+    }
+
+
+    /**
+     * @Route("/User/show/{id}", name="show_user")
+     */
+   
+    public function showUser($id){
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        $user = $repository->find($id);
+        return $this->render('User/showUser.html.twig',['user'=>$user]);
     }
 
 

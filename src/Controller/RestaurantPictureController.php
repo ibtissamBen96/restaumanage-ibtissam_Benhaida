@@ -19,20 +19,19 @@ class RestaurantPictureController extends AbstractController
     }
 
     /**
-     * @Route("/restaurant/picture", name="restaurant_picture")
+     * @Route("/Restaurant/picture", name="restaurant_picture")
      */
     public function index(): Response
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/RestaurantPictureController.php',
-        ]);
+        $repository = $this->getDoctrine()->getRepository(RestaurantPicture::class);
+        $restaurantPictures = $repository->findAll();
+        return $this->render('RestaurantPicture/restaurantPicture.html.twig',['restaurantPictures'=>$restaurantPictures]);
     }
 
 
 
     /**
-     * @Route("/RestaurantPicture/new", name="create_restaurantPicture")
+     * @Route("/Restaurant/picture/new", name="create_restaurantPicture")
      */
 
     public function createRestaurantPicture(): Response{
@@ -58,7 +57,7 @@ class RestaurantPictureController extends AbstractController
 
 
     /**
-     * @Route("/RestaurantPicture/delete/{id}", name="delete_RestaurantPicture")
+     * @Route("/Restaurant/picture/delete/{id}", name="delete_RestaurantPicture")
      * @Method ({"DELETE"})
      */
    
@@ -71,7 +70,7 @@ class RestaurantPictureController extends AbstractController
 
 
     /**
-     * @Route("/RestaurantPicture/update/{id}", name="update_restaurantPicture", methods={"GET","POST"})
+     * @Route("/Restaurant/picture/update/{id}", name="update_restaurantPicture", methods={"GET","POST"})
      */
     public function updateRestaurantPicture(Request $request,$id): Response
     {
@@ -94,6 +93,18 @@ class RestaurantPictureController extends AbstractController
             return $this->render('RestaurantPicture/updateRestaurantPicture.html.twig');
         }
     }
+
+
+     /**
+     * @Route("/Restaurant/picture/show/{id}", name="show_restaurantPicture")
+     */
+   
+    public function showRestaurantPicture($id){
+        $repository = $this->getDoctrine()->getRepository(RestaurantPicture::class);
+        $restaurantPicture = $repository->find($id);
+        return $this->render('RestaurantPicture/showRestaurantPicture.html.twig',['restaurantPicture'=>$restaurantPicture]);
+    }
+
 
 
 }
