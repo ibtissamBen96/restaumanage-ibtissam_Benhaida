@@ -6,6 +6,8 @@ use App\Repository\RestaurantPictureRepository;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\Routing\Annotation\Route;
 
 class RestaurantPictureController extends AbstractController
@@ -39,9 +41,12 @@ class RestaurantPictureController extends AbstractController
         if ($request->getMethod() === 'POST') {
             
             $filename = $request->get('filename');
+            $restaurant_id = $request->get('restaurant_id');
+
             $restaurantPicture = new RestaurantPicture();
 
             $restaurantPicture->setFilename($filename);
+            $restaurantPicture->getRestaurantId($restaurant_id);
 
             $this->restaurantPictureRepository->addRestaurantPicture($restaurantPicture);
 
@@ -58,7 +63,6 @@ class RestaurantPictureController extends AbstractController
 
     /**
      * @Route("/Restaurant/picture/delete/{id}", name="delete_RestaurantPicture")
-     * @Method ({"DELETE"})
      */
    
     public function deleteRestaurantPicture($id){
@@ -81,8 +85,10 @@ class RestaurantPictureController extends AbstractController
             
             // modifier RestaurantPicture
             $filename = $request->get('filename');
+            $restaurant_id = $request->get('restaurant_id');
 
             $restaurantPicture->setFilename($filename);
+            $restaurantPicture->getRestaurantId($restaurant_id);
 
             $this->restaurantPictureRepository->updateRestaurantPicture();
             

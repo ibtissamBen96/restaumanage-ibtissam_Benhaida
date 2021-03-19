@@ -6,6 +6,8 @@ use App\Repository\RestaurantRepository;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\Routing\Annotation\Route;
 
 class RestaurantController extends AbstractController
@@ -41,11 +43,15 @@ class RestaurantController extends AbstractController
             $name = $request->get('name');
             $description = $request->get('description');
             $created_at = $request->get('created_at');
+            $city_id = $request->get('city_id');
+
 
             $restaurant = new Restaurant();
             $restaurant->setName($name);
             $restaurant->setDescription($description);
             $restaurant->setCreated_at($created_at);
+            $restaurant->setCityId($city_id);
+
 
             $this->restaurantRepository->addRestaurant($restaurant);
 
@@ -61,7 +67,6 @@ class RestaurantController extends AbstractController
 
       /**
      * @Route("/Restaurant/delete/{id}", name="delete_restaurant")
-     * @Method ({"DELETE"})
      */
    
     public function deleteRestaurant($id){
@@ -86,10 +91,14 @@ class RestaurantController extends AbstractController
             $name = $request->get('name');
             $description = $request->get('description');
             $created_at = $request->get('created_at');
+            $city_id = $request->get('city_id');
+
 
             $restaurant->setName($name);
             $restaurant->setDescription($description);
             $restaurant->setCreated_at($created_at);
+            $restaurant->setCityId($city_id);
+
 
             $this->restaurantRepository->updateRestaurant();
             

@@ -6,6 +6,9 @@ use App\Repository\ReviewRepository;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\Routing\Annotation\Route;
 
 class ReviewController extends AbstractController
@@ -42,12 +45,16 @@ class ReviewController extends AbstractController
             $message = $request->get('message');
             $rating = $request->get('rating');
             $created_at = $request->get('created_at');
+            $restaurant_id = $request->get('restaurant_id');
+            $user_id = $request->get('user_id');
 
             $review = new Review();
 
             $review->setMessage($message);
             $review->setRating($rating);
-            $review->setCreated_at($created_at);
+            $review->setCreated_at($user_id);
+            $review->setRestaurantId($restaurant_id);
+            $review->setUserId($user_id);
 
             $this->reviewRepository->addReview($review);
 
@@ -64,7 +71,6 @@ class ReviewController extends AbstractController
 
     /**
      * @Route("/Review/delete/{id}", name="delete_review")
-     * @Method ({"DELETE"})
      */
    
     public function deleteReview($id){
@@ -91,10 +97,14 @@ class ReviewController extends AbstractController
             $message = $request->get('message');
             $rating = $request->get('rating');
             $created_at = $request->get('created_at');
+            $restaurant_id = $request->get('restaurant_id');
+            $user_id = $request->get('user_id');
 
             $review->setMessage($message);
             $review->setRating($rating);
             $review->setCreated_at($created_at);
+            $review->setRestaurantId($restaurant_id);
+            $review->setUserId($user_id);
             
             $this->cityRepository->updateReview();
             $this->addFlash('success', 'review bien ajouter');

@@ -7,6 +7,8 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class UserController extends AbstractController
 {
@@ -39,16 +41,18 @@ class UserController extends AbstractController
             
             $username = $request->get('username');
             $password = $request->get('password');
+            $city_id = $request->get('city_id');
 
             $user = new User();
 
             $user->setUsername($username);
             $user->setPassword($password);
+            $user->setCityId($city_id);
 
             $this->userRepository->addUser($user);
 
             $this->addFlash('success', 'User bien ajouter');
-            return $this->redirectToRoute('user_show');
+            return $this->redirectToRoute('user');
 
         }else{
 
@@ -60,14 +64,13 @@ class UserController extends AbstractController
 
     /**
      * @Route("/User/delete/{id}", name="delete_user")
-     * @Method ({"DELETE"})
      */
    
     public function deleteUser($id){
         $user = $this->getDoctrine()->getRepository(User::class)->find($id);
         $this->userRepository->deleteUser($user);       
         $this->addFlash('success', 'user bien supprimer');
-        return $this->redirectToRoute('user_show');
+        return $this->redirectToRoute('user');
     }
 
 
@@ -82,18 +85,21 @@ class UserController extends AbstractController
             $user = $this->getDoctrine()->getRepository(User::class)->find($id);
             
             // modifier User
-            $name = $request->get('name');
-            $zipcode = $request->get('zipcode');
+            $username = $request->get('username');
+            $password = $request->get('password');
+            $city_id = $request->get('city_id');
+
             
-            $user->setName($name);
-            $user->setZipcode($zipcode);
+            $user->setUsername($username);
+            $user->setPassword($password);
+            $user->setCityId($city_id);
             
-            $this->cityRepository->updateCity();
-            $this->addFlash('success', 'city bien ajouter');
-            return $this->redirectToRoute('city_show');
+            $this->userRepository->updateUser();
+            $this->addFlash('success', 'user bien ajouter');
+            return $this->redirectToRoute('user');
 
         }else{
-            return $this->render('City/updateCity.html.twig');
+            return $this->render('User/updateUser.html.twig');
         }
     }
 
