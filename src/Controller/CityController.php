@@ -70,6 +70,33 @@ class CityController extends AbstractController
     }
 
 
+    /**
+     * @Route("/City/update/{id}", name="update_city", methods={"GET","POST"})
+     */
+    public function updateCity(Request $request,$id): Response
+    {
+        if ($request->getMethod() === 'POST')
+        {
+            // chercher city
+            $city = $this->getDoctrine()->getRepository(City::class)->find($id);
+            
+            // modifier city
+            $name = $request->get('name');
+            $zipcode = $request->get('zipcode');
+            
+            $city->setName($name);
+            $city->setZipcode($zipcode);
+
+            $this->cityRepository->updateCity();
+            $this->addFlash('success', 'city bien ajouter');
+            return $this->redirectToRoute('city_show');
+
+        }else{
+            return $this->render('City/updateCity.html.twig');
+        }
+    }
+
+
 
 
 

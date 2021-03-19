@@ -72,5 +72,37 @@ class ReviewController extends AbstractController
         $this->addFlash('success', 'review bien supprimer');
         return $this->redirectToRoute('review_show');
     }
+
+
+
+
+    /**
+     * @Route("/Review/update/{id}", name="update_user", methods={"GET","POST"})
+     */
+    public function updateReview(Request $request,$id): Response
+    {
+        if ($request->getMethod() === 'POST')
+        {
+            // chercher Review
+            $review = $this->getDoctrine()->getRepository(Review::class)->find($id);
+            
+            // modifier Review
+            $message = $request->get('message');
+            $rating = $request->get('rating');
+            $created_at = $request->get('created_at');
+
+            $review->setMessage($message);
+            $review->setRating($rating);
+            $review->setCreated_at($created_at);
+            
+            $this->cityRepository->updateReview();
+            $this->addFlash('success', 'review bien ajouter');
+            return $this->redirectToRoute('review_show');
+
+        }else{
+            return $this->render('Review/updateReview.html.twig');
+        }
+    }
+
     
 }

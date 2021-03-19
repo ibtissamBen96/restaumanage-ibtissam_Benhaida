@@ -47,7 +47,7 @@ class RestaurantPictureController extends AbstractController
             $this->restaurantPictureRepository->addRestaurantPicture($restaurantPicture);
 
             $this->addFlash('success', 'Picture bien ajouter');
-            return $this->redirectToRoute('RestaurantPicture_show');
+            return $this->redirectToRoute('restaurantPicture_show');
 
         }else{
 
@@ -58,7 +58,7 @@ class RestaurantPictureController extends AbstractController
 
 
     /**
-     * @Route("/Restaurant/delete/{id}", name="delete_restaurant")
+     * @Route("/RestaurantPicture/delete/{id}", name="delete_RestaurantPicture")
      * @Method ({"DELETE"})
      */
    
@@ -67,6 +67,32 @@ class RestaurantPictureController extends AbstractController
         $this->restaurantPictureRepository->deleteRestaurantPicture($restaurantPicture);       
         $this->addFlash('success', 'Restaurant Picture bien supprimer');
         return $this->redirectToRoute('restaurantPicture_show');
+    }
+
+
+    /**
+     * @Route("/RestaurantPicture/update/{id}", name="update_restaurantPicture", methods={"GET","POST"})
+     */
+    public function updateRestaurantPicture(Request $request,$id): Response
+    {
+        if ($request->getMethod() === 'POST')
+        {
+            // chercher RestaurantPicture
+            $restaurantPicture = $this->getDoctrine()->getRepository(RestaurantPicture::class)->find($id);
+            
+            // modifier RestaurantPicture
+            $filename = $request->get('filename');
+
+            $restaurantPicture->setFilename($filename);
+
+            $this->restaurantPictureRepository->updateRestaurantPicture();
+            
+            $this->addFlash('success', 'Restaurant Picture bien modifier');
+            return $this->redirectToRoute('restaurantPicture_show');
+
+        }else{
+            return $this->render('RestaurantPicture/updateRestaurantPicture.html.twig');
+        }
     }
 
 

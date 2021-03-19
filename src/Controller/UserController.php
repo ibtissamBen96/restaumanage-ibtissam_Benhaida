@@ -71,4 +71,32 @@ class UserController extends AbstractController
         return $this->redirectToRoute('user_show');
     }
 
+
+    /**
+     * @Route("/User/update/{id}", name="update_user", methods={"GET","POST"})
+     */
+    public function updateUser(Request $request,$id): Response
+    {
+        if ($request->getMethod() === 'POST')
+        {
+            // chercher User
+            $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+            
+            // modifier User
+            $name = $request->get('name');
+            $zipcode = $request->get('zipcode');
+            
+            $user->setName($name);
+            $user->setZipcode($zipcode);
+            
+            $this->cityRepository->updateCity();
+            $this->addFlash('success', 'city bien ajouter');
+            return $this->redirectToRoute('city_show');
+
+        }else{
+            return $this->render('City/updateCity.html.twig');
+        }
+    }
+
+
 }

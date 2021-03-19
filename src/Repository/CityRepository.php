@@ -48,14 +48,27 @@ class CityRepository extends ServiceEntityRepository
     }
     */
 
+
+    //la methode d'ajoute
     public function addCity($city){
             $entityManager = $this->getEntityManager();
             $entityManager->persist($city);
             $entityManager->flush();
     }
 
+
+    //la methode de supprission
     public function deleteCity($city){
         $entityManager->remove($city);
         $entityManager->flush();
     }
+
+    //la methode de modification
+    public function updateCity()
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->flush();
+    }
+
 }
+

@@ -48,14 +48,27 @@ class RestaurantRepository extends ServiceEntityRepository
     }
     */
 
+
+    //la methode d'ajoute
     public function addRestaurant($restaurant){
         $entityManager = $this->getEntityManager();
         $entityManager->persist($restaurant);
         $entityManager->flush();
     }
 
+    //la methode de supprission
     public function deleteRestaurant($restaurant){
         $entityManager->remove($restaurant);
         $entityManager->flush();
     }
+
+    //la methode de modification
+    public function updateRestaurant()
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->flush();
+    }
+
+
 }
+

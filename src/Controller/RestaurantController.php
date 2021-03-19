@@ -72,4 +72,34 @@ class RestaurantController extends AbstractController
         return $this->redirectToRoute('restaurant_show');
     }
 
+
+    /**
+     * @Route("/Restaurant/update/{id}", name="update_restaurant", methods={"GET","POST"})
+     */
+    public function updateRestaurant(Request $request,$id): Response
+    {
+        if ($request->getMethod() === 'POST')
+        {
+            // chercher Restaurant
+            $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)->find($id);
+            
+            // modifier Restaurant
+            $name = $request->get('name');
+            $description = $request->get('description');
+            $created_at = $request->get('created_at');
+
+            $restaurant->setName($name);
+            $restaurant->setDescription($description);
+            $restaurant->setCreated_at($created_at);
+
+            $this->restaurantRepository->updateRestaurant();
+            
+            $this->addFlash('success', 'Restaurant  bien modifier');
+            return $this->redirectToRoute('restaurant_show');
+
+        }else{
+            return $this->render('Restaurant/updateRestaurant.html.twig');
+        }
+    }
+
 }

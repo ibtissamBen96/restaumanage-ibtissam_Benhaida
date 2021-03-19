@@ -48,14 +48,24 @@ class UserRepository extends ServiceEntityRepository
     }
     */
 
+    //la methode d'ajoute
     public function addUser($user){
         $entityManager = $this->getEntityManager();
         $entityManager->persist($user);
         $entityManager->flush();
     }
     
+     //la methode de supprission
     public function deleteUser($user){
         $entityManager->remove($user);
+        $entityManager->flush();
+    }
+
+
+    //la methode de modification
+    public function updateUser()
+    {
+        $entityManager = $this->getEntityManager();
         $entityManager->flush();
     }
 }
