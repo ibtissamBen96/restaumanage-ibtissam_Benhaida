@@ -53,4 +53,9 @@ class UserRepository extends ServiceEntityRepository
         $entityManager->persist($user);
         $entityManager->flush();
     }
+    
+    public function deleteUser($user){
+        $entityManager->remove($user);
+        $entityManager->flush();
+    }
 }

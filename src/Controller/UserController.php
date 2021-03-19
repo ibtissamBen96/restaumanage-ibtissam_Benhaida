@@ -58,4 +58,17 @@ class UserController extends AbstractController
     }
 
 
+
+    /**
+     * @Route("/User/delete/{id}", name="delete_user")
+     * @Method ({"DELETE"})
+     */
+   
+    public function deleteUser($id){
+        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $this->userRepository->deleteUser($user);       
+        $this->addFlash('success', 'user bien supprimer');
+        return $this->redirectToRoute('user_show');
+    }
+
 }

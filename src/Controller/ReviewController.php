@@ -59,5 +59,18 @@ class ReviewController extends AbstractController
         }  
     }
 
+
+
+    /**
+     * @Route("/Review/delete/{id}", name="delete_review")
+     * @Method ({"DELETE"})
+     */
+   
+    public function deleteReview($id){
+        $review = $this->getDoctrine()->getRepository(Review::class)->find($id);
+        $this->reviewRepository->deleteReview($review);       
+        $this->addFlash('success', 'review bien supprimer');
+        return $this->redirectToRoute('review_show');
+    }
     
 }

@@ -53,4 +53,9 @@ class ReviewRepository extends ServiceEntityRepository
         $entityManager->persist($review);
         $entityManager->flush();
     }
+
+    public function deleteReview($review){
+        $entityManager->remove($review);
+        $entityManager->flush();
+    }
 }

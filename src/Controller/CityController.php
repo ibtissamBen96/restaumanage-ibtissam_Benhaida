@@ -57,4 +57,20 @@ class CityController extends AbstractController
 
 
 
+    /**
+     * @Route("/City/delete/{id}", name="delete_city")
+     * @Method ({"DELETE"})
+     */
+   
+    public function deleteCity($id){
+        $city = $this->getDoctrine()->getRepository(City::class)->find($id);
+        $this->cityRepository->deleteCity($city);       
+        $this->addFlash('success', 'city bien supprimer');
+        return $this->redirectToRoute('city_show');
+    }
+
+
+
+
+
 }

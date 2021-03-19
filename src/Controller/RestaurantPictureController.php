@@ -56,4 +56,18 @@ class RestaurantPictureController extends AbstractController
     }
 
 
+
+    /**
+     * @Route("/Restaurant/delete/{id}", name="delete_restaurant")
+     * @Method ({"DELETE"})
+     */
+   
+    public function deleteRestaurantPicture($id){
+        $restaurantPicture = $this->getDoctrine()->getRepository(RestaurantPicture::class)->find($id);
+        $this->restaurantPictureRepository->deleteRestaurantPicture($restaurantPicture);       
+        $this->addFlash('success', 'Restaurant Picture bien supprimer');
+        return $this->redirectToRoute('restaurantPicture_show');
+    }
+
+
 }

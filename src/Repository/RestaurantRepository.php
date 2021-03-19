@@ -53,4 +53,9 @@ class RestaurantRepository extends ServiceEntityRepository
         $entityManager->persist($restaurant);
         $entityManager->flush();
     }
+
+    public function deleteRestaurant($restaurant){
+        $entityManager->remove($restaurant);
+        $entityManager->flush();
+    }
 }

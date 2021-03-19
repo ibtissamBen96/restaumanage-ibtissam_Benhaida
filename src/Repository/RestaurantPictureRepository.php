@@ -53,4 +53,9 @@ class RestaurantPictureRepository extends ServiceEntityRepository
         $entityManager->persist($restaurantPicture);
         $entityManager->flush();
     }
+
+    public function deleteRestaurantPicture($restaurantPicture){
+        $entityManager->remove($restaurantPicture);
+        $entityManager->flush();
+    }
 }

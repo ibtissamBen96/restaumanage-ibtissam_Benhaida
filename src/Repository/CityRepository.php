@@ -53,4 +53,9 @@ class CityRepository extends ServiceEntityRepository
             $entityManager->persist($city);
             $entityManager->flush();
     }
+
+    public function deleteCity($city){
+        $entityManager->remove($city);
+        $entityManager->flush();
+    }
 }
