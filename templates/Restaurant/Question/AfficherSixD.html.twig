@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Restaurants!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+                    
+					
+        <div class="container">
+            <div class="row mt-4">
+               <div class="col-md-12 mx-auto">
+                    <div class="card bg-light rounded">
+                        <div class="container-fluid">
+                            <div class="card-header mt-2 rounded">
+                               <h3>Afficher les 6 derniers restaurants créés</h3>
+                            </div>
+                            <div class="card-body mt-2 rounded">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Description</th>
+                                        <th>Date de Creation</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for restaurant in restaurantsSixD %}
+                                        <tr>
+                                        
+                                            <td>{{restaurant.name}}</td>
+                                            <td>{{restaurant.description}}</td>
+                                            <td>{{restaurant.create_at}}</td>
+
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            </div>
+                            <div class="card-header mt-2 rounded">
+                                    <a href="{{path('restaurant')}}" style="margin-right: 120px" class="btn btn-dark"><span>Lists des restaurants</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+{% endblock %}

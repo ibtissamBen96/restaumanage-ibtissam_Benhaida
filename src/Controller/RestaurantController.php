@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Restaurant;
-use App\Controller\City;
+use App\Entity\City;
 use App\Repository\RestaurantRepository;
 use App\Repository\CityRepository;
 
@@ -129,10 +129,52 @@ class RestaurantController extends AbstractController
    
     public function showRestaurant($id){
         $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)->find($id);
-
-        $repository = $this->getDoctrine()->getRepository(Restaurant::class);
-        $restaurant = $repository->find($id);
-        return $this->render('Restaurant/showRestaurant.html.twig',['restaurant'=>$restaurant]);
+        $city = $this->getDoctrine()->getRepository(City::class)->find($restaurant->getCityId());
+        $reviews= $this->restaurantRepository->ListeRestaurantsDetaile($id);
+        return $this->render('Restaurant/showRestaurant.html.twig',
+        [
+            'restaurant'=>$restaurant,
+            'city'=>$city,
+            'reviews'=>$reviews
+            
+        ]);
     }
+
+
+     /**
+     * @Route("/Restaurant/AfficherSixD", name="AfficherSixD")
+     */
+   
+    public function AfficherSixD(){
+
+        $restaurantsSixD= $this->restaurantRepository->AfficherSixD();
+        return $this->render('Restaurant/Question/AfficherSixD.html.twig',
+        ['restaurantsSixD'=>$restaurantsSixD]);
+    }
+
+    /**
+     * @Route("/Restaurant/AfficherTroisTopM", name="AfficherTroisTopM")
+     */
+   
+    public function AfficherTroisTopM(){
+        $restaurantsTroisTopM= $this->restaurantRepository->AfficherTroisTopM();
+        return $this->render('Restaurant/Question/AfficherTroisTopM.html.twig',
+        ['restaurantsTroisTopM'=>$restaurantsTroisTopM]);
+    }
+
+    /**
+     * @Route("/Restaurant/ValeurMoyenne", name="ValeurMoyenne")
+     */
+   
+    public function ValeurMoyenne(){
+        $restaurants = $this->getDoctrine()->getRepository(Restaurant::class)->findAll();
+        return $this->render('Restaurant/Question/AfficherValeurMoyenne.html.twig',
+        ['restaurants'=>$restaurants]);
+    }
+
+     
+    
+
+
 
 }

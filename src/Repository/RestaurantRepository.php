@@ -71,5 +71,72 @@ class RestaurantRepository extends ServiceEntityRepository
     }
 
 
+    //la methode pour Afficher les 6 derniers restaurants créés
+    public function AfficherSixD()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT * FROM restaurant ORDER BY create_at DESC LIMIT 0, 6';
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->execute();
+
+        return $stmt->fetchAllAssociative();
+         
+    }
+
+
+    //la methode pour Afficher les 3 top meilleurs restaurants
+    public function AfficherTroisTopM()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT AVG(review.rating) as moyenne,name,restaurant.create_at ,restaurant.id as restaurantId 
+        FROM review INNER JOIN restaurant
+        ON review.restaurant_id_id = restaurant.id 
+        GROUP BY restaurant_id_id 
+        ORDER BY moyenne DESC LIMIT 0, 3';
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->execute();
+
+        return $stmt->fetchAllAssociative();
+      
+    }
+
+
+
+
+    //la methode pour Lister les restaurants et leurs détails (review, city..)
+    public function ListeRestaurantsDetaile($id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+        SELECT restaurant.id, restaurant.name,
+        restaurant.description,restaurant.create_at,
+        review.message,review.rating,review.user_id_id,
+        user.username
+        FROM review INNER JOIN restaurant 
+        ON review.restaurant_id_id = restaurant.id  
+        
+        INNER JOIN user ON review.user_id_id=user.id
+        where restaurant.id=".$id;
+        
+
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->execute();
+
+        $restaurants = $stmt->fetchAllAssociative();
+        return $restaurants ;
+    }
+
+
 }
 

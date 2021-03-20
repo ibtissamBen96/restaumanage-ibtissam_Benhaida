@@ -168,4 +168,20 @@ class Restaurant
 
         return $this;
     }
+
+
+
+
+   //fonction pour calculer la valeur moyenne de la note d'un restaurant 
+    public function Moyenne() : float{
+
+        $somme = 0;
+        $total = 0;
+        foreach($this->getReviews() as $review) {
+            $somme += $review->getRating();
+            $total++;
+        }
+
+        return $somme/$total;
+   }
 }
