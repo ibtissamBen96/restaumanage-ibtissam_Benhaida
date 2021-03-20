@@ -59,6 +59,7 @@ class CityRepository extends ServiceEntityRepository
 
     //la methode de supprission
     public function deleteCity($city){
+        $entityManager = $this->getEntityManager();
         $entityManager->remove($city);
         $entityManager->flush();
     }

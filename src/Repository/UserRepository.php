@@ -57,6 +57,7 @@ class UserRepository extends ServiceEntityRepository
     
      //la methode de supprission
     public function deleteUser($user){
+        $entityManager = $this->getEntityManager();
         $entityManager->remove($user);
         $entityManager->flush();
     }

@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AnimauxController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+                    <h3 class="card-header text-default">
+                                List des Restaurants
+                    </h3>
+					<br>
+
+		{% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissible fade show">
+                {{ message }}
+            </div>
+        {% endfor %}
+      {% endfor %}
+
+	    {% for message in app.flashes('error') %}
+            <div class="alert alert-error">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="container">
+            <div class="row mt-4">
+               <div class="col-md-12 mx-auto">
+                    <div class="card bg-light rounded">
+                        <div class="container-fluid">
+                            <div class="card-body mt-2 rounded">
+                                <form method="post" action="{{ path('update_restaurant',{'id':restaurant.id}) }}">
+                                    
+                                    <div class="form-group">
+                                        <label >Nom</label>
+                                        <input type="text" class="form-control" value ="{{restaurant.name}}" name="name" required />
+                                    </div>
+                                   <div class="form-group">
+                                        <label >Description</label>
+                                        <input type="text" class="form-control" value ="{{restaurant.description}}" name="description" required />
+                                    </div>
+
+                                  
+                                     
+                                
+                                    <div class="form-group">
+                                        <label>City</label>
+                                        <select class="form-control" name="city_id" required>
+                                            {% for city in cities %}
+                                                <option value="{{city.id}}">{{city.name}}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    </div>
+                                   
+                                    <button type="submit" class="btn btn-dark">Submit</button>
+                                    <a href="{{path('restaurant')}}" style="margin-right: 120px" class="btn btn-primary"><span>Lists des restaurants</span></a>
+
+	                            </form>
+   
+
+  
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+{% endblock %}

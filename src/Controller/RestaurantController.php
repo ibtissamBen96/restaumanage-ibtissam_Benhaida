@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 use App\Entity\Restaurant;
+use App\Controller\City;
 use App\Repository\RestaurantRepository;
+use App\Repository\CityRepository;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +16,13 @@ class RestaurantController extends AbstractController
 {
 
     private $restaurantRepository;
+    private $cityRepository;
 
-    public function __construct(RestaurantRepository $restaurantRepository)
+    public function __construct(RestaurantRepository $restaurantRepository,
+    CityRepository $cityRepository)
     {
         $this->restaurantRepository = $restaurantRepository;
+        $this->cityRepository = $cityRepository;
     }
 
     /**
@@ -36,31 +41,32 @@ class RestaurantController extends AbstractController
      * @Route("/Restaurant/new", name="create_restaurant")
      */
 
-    public function createRestaurant(): Response{
+    public function createRestaurant(Request $request): Response{
+
 
         if ($request->getMethod() === 'POST') {
             
+            $restaurant = new Restaurant();
+
             $name = $request->get('name');
             $description = $request->get('description');
-            $created_at = $request->get('created_at');
-            $city_id = $request->get('city_id');
+            $city_id = $this->cityRepository->find($request->get('city_id'));
 
-
-            $restaurant = new Restaurant();
             $restaurant->setName($name);
             $restaurant->setDescription($description);
-            $restaurant->setCreated_at($created_at);
+            $restaurant->setCreatedAt(new \DateTime());
             $restaurant->setCityId($city_id);
 
 
             $this->restaurantRepository->addRestaurant($restaurant);
 
             $this->addFlash('success', 'restaurant bien ajouter');
-            return $this->redirectToRoute('restaurant_show');
+            return $this->redirectToRoute('restaurant');
 
         }else{
-
-            return $this->render('Restaurant/addRestaurant.html.twig');
+            $cities = $this->cityRepository->findAll();
+            return $this->render('Restaurant/addRestaurant.html.twig',
+               ['cities'=>$cities]);
         }  
     }
 
@@ -73,7 +79,7 @@ class RestaurantController extends AbstractController
         $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)->find($id);
         $this->restaurantRepository->deleteRestaurant($restaurant);       
         $this->addFlash('success', 'restaurant bien supprimer');
-        return $this->redirectToRoute('restaurant_show');
+        return $this->redirectToRoute('restaurant');
     }
 
 
@@ -82,31 +88,38 @@ class RestaurantController extends AbstractController
      */
     public function updateRestaurant(Request $request,$id): Response
     {
+        
         if ($request->getMethod() === 'POST')
         {
             // chercher Restaurant
-            $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)->find($id);
-            
+        $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)->find($id);
+
             // modifier Restaurant
             $name = $request->get('name');
             $description = $request->get('description');
-            $created_at = $request->get('created_at');
-            $city_id = $request->get('city_id');
+            $city_id = $this->cityRepository->find($request->get('city_id'));
 
 
             $restaurant->setName($name);
             $restaurant->setDescription($description);
-            $restaurant->setCreated_at($created_at);
+            $restaurant->setCreatedAt(new \DateTime());
             $restaurant->setCityId($city_id);
 
 
             $this->restaurantRepository->updateRestaurant();
             
             $this->addFlash('success', 'Restaurant  bien modifier');
-            return $this->redirectToRoute('restaurant_show');
+            return $this->redirectToRoute('restaurant');
 
         }else{
-            return $this->render('Restaurant/updateRestaurant.html.twig');
+            $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)->find($id);
+
+            $cities = $this->cityRepository->findAll();
+            return $this->render('Restaurant/updateRestaurant.html.twig',[
+                'cities'=>$cities,
+                'restaurant'=>$restaurant,
+
+                ]);
         }
     }
 
@@ -115,6 +128,8 @@ class RestaurantController extends AbstractController
      */
    
     public function showRestaurant($id){
+        $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)->find($id);
+
         $repository = $this->getDoctrine()->getRepository(Restaurant::class);
         $restaurant = $repository->find($id);
         return $this->render('Restaurant/showRestaurant.html.twig',['restaurant'=>$restaurant]);

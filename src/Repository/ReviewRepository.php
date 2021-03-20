@@ -58,6 +58,7 @@ class ReviewRepository extends ServiceEntityRepository
 
     //la methode de supprission
     public function deleteReview($review){
+        $entityManager = $this->getEntityManager();
         $entityManager->remove($review);
         $entityManager->flush();
     }

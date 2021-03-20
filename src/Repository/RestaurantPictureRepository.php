@@ -58,6 +58,7 @@ class RestaurantPictureRepository extends ServiceEntityRepository
 
     //la methode de supprission
     public function deleteRestaurantPicture($restaurantPicture){
+        $entityManager = $this->getEntityManager();
         $entityManager->remove($restaurantPicture);
         $entityManager->flush();
     }
