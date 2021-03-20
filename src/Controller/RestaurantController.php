@@ -172,6 +172,16 @@ class RestaurantController extends AbstractController
         ['restaurants'=>$restaurants]);
     }
 
+
+    /**
+     * @Route("/Restaurant/classerParVot", name="classerParVot")
+     */
+   
+    public function classerParVot(){
+        $restaurants= $this->restaurantRepository->classerParVot();
+        return $this->render('Restaurant/Question/classerParVot.html.twig',
+        ['restaurants'=>$restaurants]);
+    }
      
     
 

@@ -138,5 +138,28 @@ class RestaurantRepository extends ServiceEntityRepository
     }
 
 
+    //la methode pour classer les restaurant pas vot
+    public function classerParVot()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+        SELECT restaurant.id, restaurant.name,
+        restaurant.description,restaurant.create_at,
+        avg(review.rating) as moyenne
+        FROM review INNER JOIN restaurant 
+        ON review.restaurant_id_id = restaurant.id  
+        GROUP BY restaurant.id
+        ORDER BY moyenne Desc";
+    
+        $stmt = $conn->prepare($sql);
+
+        $stmt->execute();
+
+        $restaurants = $stmt->fetchAllAssociative();
+        return $restaurants ;
+    }
+
+
 }
 
